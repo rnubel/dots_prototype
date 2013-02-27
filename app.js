@@ -12,7 +12,8 @@ var express = require('express')
   , path = require('path');
 
 
-var app = express();
+var app;
+exports.app = app = express();
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -35,6 +36,8 @@ app.get('/matches/create', matches.create);
 app.get('/matches/:id', matches.show);
 app.get('/matches/:id/line/:x/:y/:side', matches.drawLine);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
-});
+if (process.argv[1].match(/app.js/)) {
+  http.createServer(app).listen(app.get('port'), function(){
+    console.log("Express server listening on port " + app.get('port'));
+  });
+}
